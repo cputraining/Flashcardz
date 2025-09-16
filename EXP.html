@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 Flashcard Hero</title>
+  <!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <title>Flashcardz - true luxury</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Quintessential&display=swap');
+    </style>
+  <style>
+    body {
+      font-family: Asimovian, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background 0.5s;
+      overflow: hidden;
+    }
+
+    #streakBox {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 400px;
+      position: relative;
+    }
+
+    h1 { margin-top: 0; font-size: 2em; }
+
+    #streak, #level, #exp, #reward {
+      font-size: 1.3em;
+      margin: 8px 0;
+    }
+
+    .progress-container {
+      background: #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 22px;
+      margin: 12px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: goldenrod;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+
+    #badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      gap: 8px;
+    }
+
+    .badge {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.5s;
+    }
+
+    .badge.levelup {
+      animation: bounce 0.7s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      background: goldenrod;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover { background: rgb(150, 114, 24); }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      top: 0;
+      left: 0;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Top-right clickable area */
+    #secretArea {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="streakBox">
+    <h1>🔥 Flashcard Hero</h1>
+    <div id="streak">🔥 Current Streak: 0 days</div>
+    <div id="level">⭐ Level: 1</div>
+    <div id="exp">EXP: 0 / 100</div>
+    <div class="progress-container">
+      <div class="progress-bar" id="expBar"></div>
+    </div>
+    <div id="reward">🎁 Keep studying to unlock badges!</div>
+    <div id="badges"></div>
+    <button onclick="goBack()">⬅ Back</button>
+  </div>
+
+  <!-- Top-right secret clickable area -->
+  <div id="secretArea"></div>
+
+  <script>
+
+    
+    const badgeImages = {
+      2: "Assets/Screenshot 2025-09-15 204531.png", 
+      3: "Assets/Screenshot 2025-09-15 204543.png", 
+      5: "Assets/Screenshot 2025-09-15 203630.png",
+      10: "Assets/Screenshot 2025-09-15 204559.png" 
+    };
+
+    const badgeColors = {
+      2: "#cd7f32",
+      3: "#C0C0C0",
+      5: "#FFD700",
+      10: "#ff69b4"
+    };
+
+    // Secret codes with different EXP amounts
+    const secretCodes = {
+      "superstar": 2200,
+      "studyhard": 100,
+      "legendary": 200,
+      "superbrain": 50,
+      "resetall": "reset" // NEW secret code to reset everything
+    };
+
+    function getTodayDate() {
+      return new Date().toISOString().split("T")[0];
+    }
+
+    function expNeededForLevel(level) {
+      return 100 + 20 * (level - 1);
+    }
+
+    function updateGame() {
+      let streak = parseInt(localStorage.getItem("streak") || 0);
+      let exp = parseInt(localStorage.getItem("exp") || 0);
+      let level = parseInt(localStorage.getItem("level") || 1);
+      const lastDate = localStorage.getItem("lastDate");
+      const today = getTodayDate();
+
+      if (!lastDate) {
+        streak = 1;
+        exp += 10;
+      } else {
+        const yesterday = new Date(lastDate);
+        yesterday.setDate(yesterday.getDate() + 1);
+        if (today === lastDate) { } 
+        else if (today === yesterday.toISOString().split("T")[0]) {
+          streak++;
+          exp += 10;
+        } else {
+          streak = 1;
+          exp += 5;
+        }
+      }
+
+      let levelUp = false;
+      while (exp >= expNeededForLevel(level)) {
+        exp -= expNeededForLevel(level);
+        level++;
+        levelUp = true;
+      }
+
+      localStorage.setItem("streak", streak);
+      localStorage.setItem("exp", exp);
+      localStorage.setItem("level", level);
+      localStorage.setItem("lastDate", today);
+
+      document.getElementById("streak").textContent = `🔥 Current Streak: ${streak} days`;
+      document.getElementById("exp").textContent = `EXP: ${exp} / ${expNeededForLevel(level)}`;
+      document.getElementById("level").textContent = `⭐ Level: ${level}`;
+      document.getElementById("expBar").style.width = (exp / expNeededForLevel(level) * 100) + "%";
+
+      displayRewards(level, levelUp);
+    }
+
+    function displayRewards(level, levelUp) {
+      const reward = document.getElementById("reward");
+      const badgesDiv = document.getElementById("badges");
+
+      let bgColor = "#f0f0f0";
+      for (let lvl in badgeColors) {
+        if (level >= lvl) bgColor = badgeColors[lvl];
+      }
+      document.body.style.background = bgColor;
+
+      badgesDiv.innerHTML = "";
+      for (let lvl in badgeImages) {
+        if (level >= lvl) {
+          const img = document.createElement("img");
+          img.src = badgeImages[lvl];
+          img.className = "badge";
+          badgesDiv.appendChild(img);
+        }
+      }
+
+      if (level >= 10) reward.textContent = "🌟 Legendary Flashcard Hero!";
+      else if (level >= 5) reward.textContent = "🥇 Gold Badge Achieved!";
+      else if (level >= 3) reward.textContent = "🏅 Silver Badge Achieved!";
+      else if (level >= 2) reward.textContent = "🎉 Bronze Badge Achieved!";
+      else reward.textContent = "Keep studying to unlock badges!";
+
+      if (levelUp && level % 5 === 0) launchConfetti();
+    }
+
+    function launchConfetti() {
+      for (let i = 0; i < 50; i++) {
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+        conf.style.left = Math.random() * window.innerWidth + "px";
+        conf.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        conf.style.animationDuration = 1 + Math.random() * 2 + "s";
+        document.body.appendChild(conf);
+        setTimeout(() => conf.remove(), 2500);
+      }
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // Secret code click on top-right
+    document.getElementById("secretArea").addEventListener("click", () => {
+      const code = prompt("Enter secret cheat code:"); 
+      if (!code) return;
+
+      const codeValue = secretCodes[code.toLowerCase()];
+      if (codeValue === "reset") {
+        if (confirm("⚠️ Are you sure you want to RESET ALL progress?")) {
+          localStorage.removeItem("streak");
+          localStorage.removeItem("exp");
+          localStorage.removeItem("level");
+          localStorage.removeItem("lastDate");
+          alert("✅ All progress has been reset!");
+          updateGame();
+        }
+      } else if (codeValue) {
+        let exp = parseInt(localStorage.getItem("exp") || 0);
+        exp += codeValue;
+        localStorage.setItem("exp", exp);
+        alert(`💥 Cheat activated! +${codeValue} EXP!`);
+        updateGame();
+      } else {
+        alert("❌ Wrong code!");
+      }
+    });
+
+    updateGame();
+  </script>
+</body>
+</html>

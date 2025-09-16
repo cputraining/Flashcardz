@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcardz - true luxury</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Quintessential&display=swap');
+    </style>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <div class="music-player">
+    <h3>Music Player</h3>
+  <select id="songSelect" style="margin-bottom:10px;">
+    <option value="">-- Select a song --</option>
+    <option value="">-- Study Tracks--</option>
+    <option value="Assets/motivate.mp3">Motivation</option>
+    <option value="Assets/phonk.mp3">Phonk</option>
+    <option value="Assets/study.mp3">Study</option>
+    <option value="Assets/space.mp3">Space</option>
+    <option value="">-- Editors' Picks --</option>
+    <option value="Assets/Undertale - Megalovania(MP3_128K).mp3">Megalovania</option>
+    <option value="Assets/phonk-music-340264.mp3">Chill Phonk</option>
+  </select>
+  <br>
+  <audio id="audioPlayer" controls autoplay style="width:250px;">
+    <source src="https://open.spotify.com/embed/playlist/1kIlqM7lAP9vDZtW2Pchhb?utm_source=generator" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+    </div>
+    <a href="home.html"><img src="Assets/logo.jpg" width="300" height="300"></img></a>
+</head>
+<body>
+    <script>const audioPlayer = document.getElementById('audioPlayer');
+const songSelect = document.getElementById('songSelect');
+
+songSelect.onchange = function() {
+  audioPlayer.src = this.value;
+  audioPlayer.play();
+};</script>
+    <h1  style="font-family: Quintessential; text-align: center; color: rgb(174, 125, 1); text-shadow: 3px 3px 0 #000;">Welcome to True Luxury - Flashcardz</h1>
+    <hr color="#D4A017" size="3px" class="horizontal_line">
+
+    <div id="root">
+    <nav id="main-nav" class="sidebar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="flashcards.html">Flashcards</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="EXP.html">Rewards</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+    <div id="main-page"></div>
+    </div>
+
+    <div class="credits-page">
+        <h1>Tatva Sunkara</h1>
+        <h2>Head Developer & Designer</h2>
+    </div>
+
+    <div class="credits-page">
+        <h1>Abhinav Parna</h1>
+        <h2>Head Developer & Tester</h2>
+    </div>
+
+    <div class="credits-page">
+        <h1>Evan Malviya</h1>
+        <h2>Gamification Leader</h2>
+    </div>
+
+    <div class="credits-page">
+        <h1>Jasdeep Singh</h1>
+        <h2>Music and Gamification Fine-Tuner</h2>
+    </div>
+
+    <div class="credits-page">
+        <h1>Hriday Amba</h1>
+        <h2>Website Reviewer</h2>
+    </div>
+
+    <div class="credits-page">
+        <h1>Rithik Magham</h1>
+        <h2>Flashcards Fine Tuner</h2>
+    </div>
+
+<img src="Assets/golden-background.jpg" width="650px"></img>
+</body>
+</html>

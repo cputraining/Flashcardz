@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcardz - true luxury</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Quintessential&display=swap');
+    </style>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <div class="music-player">
+    <h3>Music Player</h3>
+  <select id="songSelect" style="margin-bottom:10px;">
+    <option value="">-- Select a song --</option>
+    <option value="">-- Study Tracks--</option>
+    <option value="Assets/motivate.mp3">Motivation</option>
+    <option value="Assets/phonk.mp3">Phonk</option>
+    <option value="Assets/study.mp3">Study</option>
+    <option value="Assets/space.mp3">Space</option>
+    <option value="">-- Editors' Picks --</option>
+    <option value="Assets/Undertale - Megalovania(MP3_128K).mp3">Megalovania</option>
+    <option value="Assets/phonk-music-340264.mp3">Chill Phonk</option>
+  </select>
+  <br>
+  <audio id="audioPlayer" controls autoplay style="width:250px;">
+    <source src="https://open.spotify.com/embed/playlist/1kIlqM7lAP9vDZtW2Pchhb?utm_source=generator" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+    </div>
+    <a href="home.html"><img src="Assets/logo.jpg" width="300" height="300"></img></a>
+</head>
+<body>
+    <script>
+const audioPlayer = document.getElementById('audioPlayer');
+const songSelect = document.getElementById('songSelect');
+
+songSelect.onchange = function() {
+  audioPlayer.src = this.value;
+  audioPlayer.play();
+};
+</script>
+    <h1  style="font-family: Quintessential; text-align: center; color: rgb(174, 125, 1); text-shadow: 3px 3px 0 #000;">Welcome to True Luxury - Flashcardz</h1>
+    <hr color="#D4A017" size="3px" class="horizontal_line">
+
+    <div id="root">
+    <nav id="main-nav" class="sidebar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="flashcards.html">Flashcards</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="EXP.html">Rewards</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+    <div id="main-page"></div>
+    </div>
+
+    <style>
+        @keyframes appear{
+            from {
+                opacity: -0.5;
+                transform: translateX(-500px);
+                scale: 1;
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0px);
+                scale: 1.2;
+            }
+        }
+
+        .whyUs{
+            animation: appear linear;
+            animation-timeline: view();
+            animation-range: entry 0% cover 60%;
+            margin-top: 250px;
+            margin-bottom: 250px;
+            opacity: 1;
+            transform: translateX(0px);
+            scale: 1.2;
+        }
+
+    </style>
+
+<h1 style="text-align: center; font-size: 50px;">Welcome to the ultimate flashcard platform!</h1>
+<hr color="#D4A017" size="5px">
+
+<div>
+<img class="whyUs" src="Assets/why_us.jpg" width="650px"></img>
+</div>
+
+<h1 style="text-align: center; font-size: 100px;">Try it now!</h1>
+<div class="flex-container">
+    <a href="flashcards.html" style="border-right: 10px solid #ffffff;"><button class="my-button">Make a flashcards set</button></a>
+    <a href="flashcards.html" style="border-right: 10px solid #ffffff;"><button class="my-button">Take a quiz</button></a>
+</div>
+
+<img src="Assets/golden-background.jpg" width="650px"></img>
+</body>
+</html>

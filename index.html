@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CAPTCHA Gate</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+
+    #captcha-screen {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    #captcha-box {
+      width: 200px;
+      height: 80px;
+      border: 2px solid #999;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+      border-radius: 6px;
+      user-select: none;
+    }
+
+    #captcha-box:hover {
+      background: #e8e8e8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fake CAPTCHA screen -->
+  <div id="captcha-screen">
+    <h2>Verify you are human</h2>
+    <p>Click the box below to continue</p>
+    <div id="captcha-box">✔ I'm not a robot</div>
+  </div>
+
+  <script>
+    document.getElementById("captcha-box").addEventListener("click", function() {
+      // Replace with your real site URL or load content
+      window.location.href = "home.html"; 
+    });
+  </script>
+</body>
+</html>

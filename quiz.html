@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcardz - true luxury</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Quintessential&display=swap');
+    </style>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+    <div class="music-player">
+    <h3>Music Player</h3>
+  <select id="songSelect" style="margin-bottom:10px;">
+    <option value="">-- Select a song --</option>
+    <option value="">-- Study Tracks--</option>
+    <option value="Assets/motivate.mp3">Motivation</option>
+    <option value="Assets/phonk.mp3">Phonk</option>
+    <option value="Assets/study.mp3">Study</option>
+    <option value="Assets/space.mp3">Space</option>
+    <option value="">-- Editors' Picks --</option>
+    <option value="Assets/Undertale - Megalovania(MP3_128K).mp3">Megalovania</option>
+    <option value="Assets/phonk-music-340264.mp3">Chill Phonk</option>
+  </select>
+  <br>
+  <audio id="audioPlayer" controls autoplay style="width:250px;">
+    <source src="https://open.spotify.com/embed/playlist/1kIlqM7lAP9vDZtW2Pchhb?utm_source=generator" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+    </div>
+    <a href="home.html"><img src="Assets/logo.jpg" width="300" height="300"></img></a>
+</head>
+<body>
+        <h1  style="font-family: Quintessential; text-align: center; color: rgb(174, 125, 1); text-shadow: 3px 3px 0 #000;">Welcome to True Luxury - Flashcardz</h1>
+    <hr color="#D4A017" size="3px" class="horizontal_line">
+
+    <div id="root">
+    <nav id="main-nav" class="sidebar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="flashcards.html">Flashcards</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="EXP.html">Rewards</a></li>
+            <li><a href="credits.html">Credits</a></li>
+        </ul>
+    </nav>
+    <div id="main-page"></div>
+    </div>
+
+    <!-- ...existing HTML above... -->
+
+<div id="quiz-root" style="max-width:600px;margin:40px auto;text-align:center;"></div>
+
+<script>
+// Load sets from localStorage (same as flashcards.html)
+let sets = JSON.parse(localStorage.getItem("flashcardSets") || "[]");
+let currentSet = null;
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+
+const quizRoot = document.getElementById('quiz-root');
+
+const audioPlayer = document.getElementById('audioPlayer');
+const songSelect = document.getElementById('songSelect');
+
+songSelect.onchange = function() {
+  audioPlayer.src = this.value;
+  audioPlayer.play();
+};
+
+// Utility: shuffle array in-place
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Step 1: Choose set
+function showSetChooser() {
+  quizRoot.innerHTML = "<h2>Choose a Flashcard Set</h2>";
+  if (!sets.length) {
+    quizRoot.innerHTML += "<p>No sets found. Please create some flashcards first!</p>";
+    return;
+  }
+  sets.forEach((set, idx) => {
+    const btn = document.createElement("button");
+    btn.textContent = set.name || `Set ${idx+1}`;
+    btn.style.margin = "10px";
+    btn.style.padding = "10px 20px";
+    btn.style.borderRadius = "10px";
+    btn.style.background = "#e2a700";
+    btn.style.color = "white";
+    btn.style.cursor = "pointer";
+    btn.onclick = () => startQuiz(idx);
+    quizRoot.appendChild(btn);
+  });
+}
+
+// Step 2: Start quiz
+function startQuiz(setIdx) {
+  currentSet = sets[setIdx];
+  if (!currentSet.flashcards || currentSet.flashcards.length < 2) {
+    quizRoot.innerHTML = "<p>This set needs at least 2 flashcards for a quiz.</p><button onclick='location.reload()'>Back</button>";
+    return;
+  }
+  // Build questions: [{term, correctDef, choices: [def, ...]}]
+  questions = currentSet.flashcards.map((fc, i) => {
+    // Get 3 random wrong definitions from other flashcards
+    let wrongDefs = currentSet.flashcards
+      .filter((_, idx) => idx !== i)
+      .map(fc2 => fc2.def);
+    shuffle(wrongDefs);
+    wrongDefs = wrongDefs.slice(0, 3);
+    // Combine and shuffle choices
+    const choices = [fc.def, ...wrongDefs];
+    shuffle(choices);
+    return {
+      term: fc.word,
+      correctDef: fc.def,
+      choices
+    };
+  });
+  shuffle(questions); // Shuffle question order
+  currentQuestion = 0;
+  score = 0;
+  showQuestion();
+}
+
+// Step 3: Show question
+function showQuestion() {
+  const q = questions[currentQuestion];
+  quizRoot.innerHTML = `
+    <h2>Question ${currentQuestion+1} of ${questions.length}</h2>
+    <div style="font-size:1.3em;margin:20px 0;"><b>What does this term mean?</b><br><span style="font-size:1.5em;color:#b8860b;">${q.term}</span></div>
+    <div id="choices"></div>
+    <div id="feedback" style="margin:20px 0;font-size:1.1em;"></div>
+  `;
+  const choicesDiv = document.getElementById('choices');
+  q.choices.forEach(choice => {
+    const btn = document.createElement("button");
+    btn.textContent = choice;
+    btn.style.display = "block";
+    btn.style.margin = "10px auto";
+    btn.style.padding = "10px 20px";
+    btn.style.borderRadius = "10px";
+    btn.style.background = "#f4e2b5";
+    btn.style.color = "#333";
+    btn.style.cursor = "pointer";
+    btn.onclick = () => handleAnswer(choice);
+    choicesDiv.appendChild(btn);
+  });
+}
+
+// Step 4: Handle answer
+function handleAnswer(selected) {
+  const q = questions[currentQuestion];
+  const feedback = document.getElementById('feedback');
+  const isCorrect = selected === q.correctDef;
+  if (isCorrect) {
+    feedback.innerHTML = `<span style="color:green;font-weight:bold;">Correct!</span>`;
+    score++;
+  } else {
+    feedback.innerHTML = `<span style="color:red;font-weight:bold;">Wrong!</span> <br> The correct answer is: <b>${q.correctDef}</b>`;
+  }
+  // Disable all buttons
+  Array.from(document.getElementById('choices').children).forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === q.correctDef) btn.style.background = "#b6e2a1";
+    if (btn.textContent === selected && !isCorrect) btn.style.background = "#f7b6b6";
+  });
+  // Next button
+  const nextBtn = document.createElement("button");
+  nextBtn.textContent = currentQuestion < questions.length - 1 ? "Next Question" : "See Results";
+  nextBtn.style.margin = "20px";
+  nextBtn.style.padding = "10px 20px";
+  nextBtn.style.borderRadius = "10px";
+  nextBtn.style.background = "#e2a700";
+  nextBtn.style.color = "white";
+  nextBtn.style.cursor = "pointer";
+  nextBtn.onclick = () => {
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      showQuestion();
+    } else {
+      showResults();
+    }
+  };
+  feedback.appendChild(nextBtn);
+}
+
+// Step 5: Show results
+function showResults() {
+  quizRoot.innerHTML = `
+    <h2>Quiz Complete!</h2>
+    <div style="font-size:1.3em;margin:20px 0;">
+      You scored <b>${score}</b> out of <b>${questions.length}</b>!
+      That is a <b>${Math.round(100 * (score / questions.length))}</b>% score!
+    </div>
+    <button onclick="location.reload()" style="padding:10px 20px;border-radius:10px;background:#e2a700;color:white;cursor:pointer;">Try Another Set</button>
+  `;
+}
+
+// Start
+showSetChooser();
+</script>
+<!-- ...existing HTML below... -->
+<img src="Assets/golden-background.jpg" width="650px"></img>
+</body>
+</html>

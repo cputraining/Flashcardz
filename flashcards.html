@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcardz - true luxury</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asimovian&family=Quintessential&display=swap');
+    </style>
+    <link type="text/css" rel="stylesheet" href="style.css"/>
+
+<meta charset="UTF-8">
+<title>Flashcard Sets</title>
+<style>
+  body { font-family: Asimovian, sans-serif; padding: 20px;}
+  h1 { text-align: center; }
+  #setsContainer { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
+  .setCard { background: #fff; padding: 50px; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 180px; text-align: center; position: relative; }
+  .setCard:hover { transform: translateY(-3px); transition: 0.2s; }
+  .deleteSet { position: absolute; top: 5px; right: 5px; background: red; border: none; color: white; border-radius: 50%; cursor: pointer; width: 25px; height: 25px; font-size: 14px; }
+  #flashcardsContainer { display: none; flex-direction: column; align-items: center; }
+  #flashcardsRows { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; max-width: 900px; }
+  .card { display: flex; flex-direction: column; align-items: center; background: #fff; padding: 50px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); width: auto;
+  min-width: 200px;
+  max-width: 300px;
+  min-height: 40px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  box-sizing: border-box;}
+  textarea { width: 150px; height: 50px; margin: 5px; padding: 8px; border-radius: 10px; border: 1px solid #ccc; resize: none; }
+  #addSetBtn, #toggleBtn, #addCardBtn { margin: 10px; padding: 10px 20px; border-radius: 10px; border: none; background: #e2a700; font-family: Asimovian; color: white; cursor: pointer; }
+  #addSetBtn:hover, #toggleBtn:hover, #addCardBtn:hover {font-family: Asimovian; background: #a07500; }
+
+
+
+ 
+  /* Toggle styles */
+  .def {
+    opacity: 1;
+    color: black;
+    transition: opacity 0.6s ease-in-out, color 0.6s ease, text-shadow 1s ease;
+  }
+  .def.hidden {
+    opacity: 0;
+    color: #FF3300;
+    text-shadow: 0 0 8px #FF3300, 0 0 15px #FF3300;
+    transition: opacity 0.6s ease-out, color 0.3s ease-out, text-shadow 0.3s ease-out;
+    pointer-events: none;
+  }
+  .def.showing {
+    color: #00FFFF;
+  }
+
+  /* Floating back button */
+  .back-btn {
+    font-family: Asimovian;
+    position: fixed;
+    top: 520px;
+    left: 300px;
+    background: #e2a700;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: background 0.2s ease;
+    z-index: 1000;
+  }
+  .back-btn:hover {
+    background: #a07500;
+  }
+  
+  .addSet {
+    font-family: Asimovian;
+    position: fixed;
+    top: 520px;
+    left: 400px;
+    background: goldenrod;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: background 0.2s ease;
+    z-index: 1000;
+  }
+  .addSet:hover {
+    background: #a07500;
+  }
+</style>
+</head>
+<body>
+<div class="music-player">
+    <h3>Music Player</h3>
+  <select id="songSelect" style="margin-bottom:10px;">
+    <option value="">-- Select a song --</option>
+    <option value="">-- Study Tracks--</option>
+    <option value="Assets/motivate.mp3">Motivation</option>
+    <option value="Assets/phonk.mp3">Phonk</option>
+    <option value="Assets/study.mp3">Study</option>
+    <option value="Assets/space.mp3">Space</option>
+    <option value="">-- Editors' Picks --</option>
+    <option value="Assets/Undertale - Megalovania(MP3_128K).mp3">Megalovania</option>
+    <option value="Assets/phonk-music-340264.mp3">Chill Phonk</option>
+  </select>
+  <br>
+  <audio id="audioPlayer" controls autoplay style="width:250px;">
+    <source src="https://open.spotify.com/embed/playlist/1kIlqM7lAP9vDZtW2Pchhb?utm_source=generator" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+    </div>
+    <a href="home.html"><img src="Assets/logo.jpg" width="300" height="300"></img></a>
+    <h1  style="font-family: Quintessential; text-align: center; color: rgb(174, 125, 1); text-shadow: 3px 3px 0 #000;">Welcome to True Luxury - Flashcardz</h1>
+    <hr color="#D4A017" size="3px" class="horizontal_line">
+
+        <div id="root">
+    <nav id="main-nav" class="sidebar">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="flashcards.html">Flashcards</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="EXP.html">Rewards</a></li>
+            <li><a href="credits.html">Credits</a></li>
+
+        </ul>
+    </nav>
+    <div id="main-page"></div>
+    </div>
+<h1>Flashcard Sets</h1>
+<div id="setsContainer"></div>
+<button class="addSet" id="addSetBtn" style="background-color: goldenrod;">+ Add Set</button>
+
+<div id="flashcardsContainer">
+  <button id="addCardBtn">+ Add Card</button>
+  <div id="flashcardsRows"></div>
+</div>
+
+<!-- Global Back button -->
+<button id="backBtn" class="back-btn">⬅ Back</button>
+
+<script>
+let sets = JSON.parse(localStorage.getItem("flashcardSets") || "[]");
+let hidden = false;
+let currentSetIndex = null;
+
+const audioPlayer = document.getElementById('audioPlayer');
+const songSelect = document.getElementById('songSelect');
+
+songSelect.onchange = function() {
+  audioPlayer.src = this.value;
+  audioPlayer.play();
+};
+
+// Display all sets
+function displaySets() {
+  document.getElementById("backBtn").style.display = "none";
+  const container = document.getElementById("setsContainer");
+  container.innerHTML = "";
+  sets.forEach((set, index) => {
+    const card = document.createElement("div");
+    card.className = "setCard";
+    card.style.border = `4px solid ${set.color || "#e2a700"}`; // Show color as border
+
+    // Title
+    const title = document.createElement("div");
+    title.textContent = set.name || `Set ${index+1}`;
+    title.style.fontWeight = "bold";
+    title.style.marginBottom = "10px";
+    card.appendChild(title);
+
+    // Color indicator
+    const colorDot = document.createElement("span");
+    colorDot.style.display = "inline-block";
+    colorDot.style.width = "18px";
+    colorDot.style.height = "18px";
+    colorDot.style.borderRadius = "50%";
+    colorDot.style.background = set.color || "#e2a700";
+    colorDot.style.marginBottom = "8px";
+    card.appendChild(colorDot);
+
+    // Delete button
+    const delBtn = document.createElement("button");
+    delBtn.className = "deleteSet";
+    delBtn.textContent = "✕";
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (confirm(`Delete set "${set.name}"?`)) {
+        sets.splice(index, 1);
+        saveSets();
+        displaySets();
+      }
+    };
+    card.appendChild(delBtn);
+
+    // Open set
+    card.onclick = () => openSet(index);
+    container.appendChild(card);
+  });
+}
+
+// Add new set
+document.getElementById("addSetBtn").onclick = () => {
+  const setName = prompt("Enter a name for your new set:");
+  if (!setName) return;
+  let color = prompt("Enter a color for your set (e.g. #e2a700 or 'goldenrod'):");
+  if (!color) color = "#e2a700";
+  sets.push({ name: setName, color: color, flashcards: [] });
+  saveSets();
+  displaySets();
+};
+
+// Open a set
+function openSet(index) {
+  currentSetIndex = index;
+  document.getElementById("setsContainer").style.display = "none";
+  document.getElementById("addSetBtn").style.display = "none";
+  document.getElementById("backBtn").style.display = "flex";
+  document.getElementById("flashcardsContainer").style.display = "flex";
+  renderFlashcards();
+}
+
+// Render flashcards in a grid layout
+function renderFlashcards() {
+  const flashcardsDiv = document.getElementById("flashcardsRows");
+  flashcardsDiv.innerHTML = "";
+
+  // Add Card Form (if visible)
+  if (window.showAddCardForm) {
+    const formDiv = document.createElement("div");
+    formDiv.className = "card";
+    formDiv.style.background = "#f9f9f9";
+    formDiv.style.border = "2px dashed #e2a700";
+    formDiv.style.marginBottom = "10px";
+
+    const wordInput = document.createElement("input");
+    wordInput.type = "text";
+    wordInput.placeholder = "Word";
+    wordInput.style.margin = "5px";
+    wordInput.style.borderRadius = "8px";
+    wordInput.style.padding = "6px";
+
+    const defInput = document.createElement("input");
+    defInput.type = "text";
+    defInput.placeholder = "Definition";
+    defInput.style.margin = "5px";
+    defInput.style.borderRadius = "8px";
+    defInput.style.padding = "6px";
+
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    saveBtn.style.margin = "5px";
+    saveBtn.style.borderRadius = "8px";
+    saveBtn.style.background = "#e2a700";
+    saveBtn.style.color = "white";
+    saveBtn.onclick = () => {
+      const word = wordInput.value.trim();
+      const def = defInput.value.trim();
+      if (!word || !def) {
+        alert("Please enter both word and definition.");
+        return;
+      }
+      sets[currentSetIndex].flashcards.push({ word, def });
+      saveSets();
+      window.showAddCardForm = false;
+      renderFlashcards();
+    };
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.style.margin = "5px";
+    cancelBtn.style.borderRadius = "8px";
+    cancelBtn.onclick = () => {
+      window.showAddCardForm = false;
+      renderFlashcards();
+    };
+
+    formDiv.appendChild(wordInput);
+    formDiv.appendChild(defInput);
+    formDiv.appendChild(saveBtn);
+    formDiv.appendChild(cancelBtn);
+    flashcardsDiv.appendChild(formDiv);
+  }
+
+  // Render flashcards
+  const set = sets[currentSetIndex];
+  set.flashcards.forEach((fc, i) => {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card";
+    cardDiv.style.cursor = "pointer";
+    cardDiv.style.position = "relative";
+
+    // Flip state
+    let showingWord = true;
+    // ...inside renderFlashcards()...
+    const textDiv = document.createElement("div");
+    textDiv.textContent = fc.word;
+    textDiv.style.fontSize = "18px";
+    textDiv.style.minHeight = "40px";
+    textDiv.style.display = "flex";
+    textDiv.style.alignItems = "center";
+    textDiv.style.justifyContent = "center";
+    // Remove fixed width/height, add flexible sizing:
+    textDiv.style.padding = "10px 20px";
+    textDiv.style.maxWidth = "300px";
+    textDiv.style.wordBreak = "break-word";
+    textDiv.style.whiteSpace = "pre-wrap";
+
+
+    cardDiv.onclick = (e) => {
+      // Prevent flip if delete button is clicked
+      if (e.target.classList.contains("delete-flashcard-btn")) return;
+      showingWord = !showingWord;
+      textDiv.textContent = showingWord ? fc.word : fc.def;
+    };
+
+    // Delete button
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "X";
+    delBtn.title = "Delete flashcard";
+    delBtn.className = "delete-flashcard-btn";
+    delBtn.style.position = "absolute";
+    delBtn.style.top = "5px";
+    delBtn.style.right = "5px";
+    delBtn.style.background = "red";
+    delBtn.style.color = "white";
+    delBtn.style.border = "none";
+    delBtn.style.borderRadius = "50%";
+    delBtn.style.width = "25px";
+    delBtn.style.height = "25px";
+    delBtn.style.cursor = "pointer";
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      if (confirm("Delete this flashcard?")) {
+        set.flashcards.splice(i, 1);
+        saveSets();
+        renderFlashcards();
+      }
+    };
+
+    cardDiv.appendChild(textDiv);
+    cardDiv.appendChild(delBtn);
+    flashcardsDiv.appendChild(cardDiv);
+  });
+  
+}
+
+
+// Add card button
+document.getElementById("addCardBtn").onclick = () => {
+  window.showAddCardForm = true;
+  renderFlashcards();
+};
+
+// Save sets
+function saveSets() {
+  localStorage.setItem("flashcardSets", JSON.stringify(sets));
+}
+
+// Toggle button
+
+
+// Back button (global)
+document.getElementById("backBtn").onclick = () => {
+  window.location.href = 'flashcards.html';
+};
+
+// Init
+displaySets();
+</script>
+
+</body>
+
+
+
+<img src="Assets/golden-background.jpg" width="650px"></img>
+</body>
+</html>
